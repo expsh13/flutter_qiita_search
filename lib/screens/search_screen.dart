@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_qiita_search/models/article.dart';
+import 'package:flutter_qiita_search/widgets/article_container.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
     });
     if (res.statusCode == 200) {
       final List<dynamic> body = jsonDecode(res.body);
-      return body.map((dynamic) => Article.fromJson(json)).toList();
+      return body.map((json) => Article.fromJson(json)).toList();
     } else {
       return [];
     }
@@ -56,6 +57,12 @@ class _SearchScreenState extends State<SearchScreen> {
               },
             ),
           ),
+          Expanded(
+              child: ListView(
+            children: articles
+                .map((article) => ArticleContainer(article: article))
+                .toList(),
+          )),
         ],
       ),
     );
